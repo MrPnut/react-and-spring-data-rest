@@ -2,6 +2,7 @@ define(function (require) {
 	'use strict';
 
 	var React = require('react');
+	var ReactDOM = require('react-dom');
 	var when = require('when');
 	var client = require('./client');
 	var follow = require('./follow');
@@ -215,11 +216,11 @@ define(function (require) {
 			e.preventDefault();
 			var newEmployee = {};
 			this.props.attributes.forEach(attribute => {
-				newEmployee[attribute] = React.findDOMNode(this.refs[attribute]).value.trim();
+				newEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
 			});
 			this.props.onCreate(newEmployee);
 			this.props.attributes.forEach(attribute => {
-				React.findDOMNode(this.refs[attribute]).value = ''; // clear out the dialog's inputs
+				ReactDOM.findDOMNode(this.refs[attribute]).value = ''; // clear out the dialog's inputs
 			});
 			window.location = "#";
 		},
@@ -256,7 +257,7 @@ define(function (require) {
 			e.preventDefault();
 			var updatedEmployee = {};
 			this.props.attributes.forEach(attribute => {
-				updatedEmployee[attribute] = React.findDOMNode(this.refs[attribute]).value.trim();
+				updatedEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
 			});
 			this.props.onUpdate(this.props.employee, updatedEmployee);
 			window.location = "#";
@@ -298,11 +299,11 @@ define(function (require) {
 	var EmployeeList = React.createClass({
 		handleInput: function (e) {
 			e.preventDefault();
-			var pageSize = React.findDOMNode(this.refs.pageSize).value;
+			var pageSize = ReactDOM.findDOMNode(this.refs.pageSize).value;
 			if (/^[0-9]+$/.test(pageSize)) {
 				this.props.updatePageSize(pageSize);
 			} else {
-				React.findDOMNode(this.refs.pageSize).value = pageSize.substring(0, pageSize.length - 1);
+				ReactDOM.findDOMNode(this.refs.pageSize).value = pageSize.substring(0, pageSize.length - 1);
 			}
 		},
 		handleNavFirst: function (e) {
@@ -352,6 +353,7 @@ define(function (require) {
 					{pageInfo}
 					<input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
 					<table>
+						<thead>
 						<tr>
 							<th>First Name</th>
 							<th>Last Name</th>
@@ -360,7 +362,10 @@ define(function (require) {
 							<th></th>
 							<th></th>
 						</tr>
+						</thead>
+						<tbody>
 						{employees}
+						</tbody>
 					</table>
 					<div>
 						{navLinks}
@@ -396,7 +401,7 @@ define(function (require) {
 	});
 	// end::employee[]
 
-	React.render(
+	ReactDOM.render(
 		<App />,
 		document.getElementById('react')
 	)
